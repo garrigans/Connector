@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.projects.haxor.connector.R;
+import com.projects.haxor.connector.enums.RouteStatus;
 import com.projects.haxor.connector.network.TracerouteContainer;
 import com.projects.haxor.connector.network.TracerouteWithPing;
 
@@ -96,6 +97,7 @@ public class TraceActivity extends Activity {
 				if (editTextPing.getText().length() == 0) {
 					Toast.makeText(TraceActivity.this, getString(R.string.no_text), Toast.LENGTH_SHORT).show();
 				} else {
+
 					textViewOverallStatus.setText("Launching...");
 					traces.clear();
 					traceListAdapter.notifyDataSetChanged();
@@ -191,11 +193,11 @@ public class TraceActivity extends Activity {
 
 			if (currentTrace.isSuccessful()) {
 				holder.imageViewStatusPing.setImageResource(R.drawable.check);
-//				textViewOverallStatus.setText("Ok");
+
 
 			} else {
 				holder.imageViewStatusPing.setImageResource(R.drawable.cross);
-//				textViewOverallStatus.setText("Fail"); // Need to work out a global to set this correctly.
+
 			}
 
 
@@ -204,11 +206,12 @@ public class TraceActivity extends Activity {
 			holder.textViewIp.setText(currentTrace.getHostname() + " (" + currentTrace.getIp() + ")");
 			holder.textViewTime.setText(currentTrace.getMs() + "ms");
 
-			if (tracerouteWithPing.isInProgress()){
+			if (tracerouteWithPing.getTraceRouteStatus() != RouteStatus.FINISH){
 				textViewOverallStatus.setText("In progress...");
-			}else{
-//				System.out.println("Check complete, destination reachable: " + String.valueOf(tracerouteWithPing.isDestinationReachable()));
-				textViewOverallStatus.setText(String.valueOf(tracerouteWithPing.isDestinationReachable()));
+			}else if (tracerouteWithPing.getTraceRouteStatus() == RouteStatus.FINISH){
+				textViewOverallStatus.setText("Finished..." + tracerouteWithPing.getTraceResultStatus());
+
+
 			}
 
 

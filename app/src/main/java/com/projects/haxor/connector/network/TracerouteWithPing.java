@@ -27,7 +27,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.projects.haxor.connector.R;
-import com.projects.haxor.connector.enums.StateMachine;
+import com.projects.haxor.connector.enums.*;
 import com.projects.haxor.connector.ui.TraceActivity;
 
 import java.io.BufferedReader;
@@ -59,11 +59,11 @@ public class TracerouteWithPing {
 	private float elapsedTime;
 	private TraceActivity context;
 
-	private boolean inProgress = true; // Keep track of what the route is doing.
-	private boolean isDestinationReachable = true; // Was the destination reached.
 
 	// Keep track of the TraceRoute machine.
 	private StateMachine traceState;
+	private ResusltStatus traceResultStatus;
+	private  RouteStatus  traceRouteStatus;
 
 
 	// timeout handling
@@ -73,8 +73,6 @@ public class TracerouteWithPing {
 
 	public TracerouteWithPing(TraceActivity context) {
 		this.context = context;
-		setTraceState(StateMachine.INITIATE);
-		System.out.println(getTraceState());
 	}
 
 
@@ -162,7 +160,7 @@ public class TracerouteWithPing {
 		@Override
 		protected String doInBackground(Void... params) {
 //			setTraceState(StateMachine.RUNNING);
-			System.out.println(getTraceState());
+
 			if (hasConnectivity()) {
 				try {
 					String res = launchPing(urlToPing);
@@ -174,15 +172,18 @@ public class TracerouteWithPing {
 						// Create the TracerouteContainer object when ping
 						// failed
 						trace = new TracerouteContainer("", ip, elapsedTime, false);
-						setTraceState(StateMachine.FAIL);
-						System.out.println(getTraceState());
-						isDestinationReachable = false;
+
+						setTraceRouteStatus(RouteStatus.FINISH);
+						setTraceResultStatus(ResusltStatus.UNREACHABLE);
+
+						System.out.println("Hit me");
 					} else {
 						// Create the TracerouteContainer object when succeed
 						trace = new TracerouteContainer("", ip, ttl == maxTtl ? Float.parseFloat(parseTimeFromPing(res))
 								: elapsedTime, true);
-						setTraceState(StateMachine.SUCCESS);
-						System.out.println("Made the hop " + getTraceState());
+
+						System.out.println("Made the hop " );
+						setTraceResultStatus(ResusltStatus.REACHABLE);
 
 					}
 
@@ -229,8 +230,8 @@ public class TracerouteWithPing {
 		 */
 		@SuppressLint("NewApi")
 		private String launchPing(String url) throws Exception {
-			setTraceState(StateMachine.EXECUTE);
-			System.out.println(getTraceState());
+
+			setTraceRouteStatus(RouteStatus.INITIATE);
 			// Build ping command with parameters
 			Process p;
 			String command = "";
@@ -279,34 +280,40 @@ public class TracerouteWithPing {
 		@Override
 		protected void onPostExecute(String result) {
 			if (!isCancelled) {
-				System.out.println(getTraceState());
+
 				System.out.println("Finished hop..");
-				System.out.println("Hop succesful: " + String.valueOf(isDestinationReachable));
+				System.out.println("Hop succesful");
 
 				try {
 					if (!"".equals(result)) {
 						if (context.getString(R.string.no_connectivity).equals(result)) {
-							setTraceState(StateMachine.FAIL);
-							System.out.println(getTraceState());
+
+							setTraceRouteStatus(RouteStatus.FINISH);
+							setTraceResultStatus(ResusltStatus.TIMEOUT);
+
 							Toast.makeText(context, context.getString(R.string.no_connectivity), Toast.LENGTH_SHORT).show();
 						} else {
 //							Log.d(TraceActivity.tag, result);
 
 							if (latestTrace != null && latestTrace.getIp().equals(ipToPing)) {
 								if (ttl < maxTtl) {
-									setTraceState(StateMachine.RUNNING);
-									System.out.println(getTraceState());
+
+									setTraceRouteStatus(RouteStatus.RUNNING);
+
 									ttl = maxTtl;
 									System.out.println("Launching next hop..");
-									setInProgress(true);
+
 									new ExecutePingAsyncTask(maxTtl).execute();
 								} else {
-									setTraceState(StateMachine.FINISH);
-									System.out.println(getTraceState());
+
+									setTraceRouteStatus(RouteStatus.FINISH);
+
+
+
 									context.stopProgressBar();
-									setInProgress(false);
-									System.out.println("Finished route...");
-									System.out.println("Destination reachable: " + String.valueOf(isDestinationReachable) );
+
+									System.out.println("Finished route..." + getTraceResultStatus());
+
 								}
 							} else {
 								if (ttl < maxTtl) {
@@ -451,27 +458,19 @@ public class TracerouteWithPing {
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
-	public boolean isDestinationReachable() {
-		return isDestinationReachable;
+	public ResusltStatus getTraceResultStatus() {
+		return traceResultStatus;
 	}
 
-	public void setDestinationReachable(boolean destinationReachable) {
-		isDestinationReachable = destinationReachable;
+	public void setTraceResultStatus(ResusltStatus traceResultStatus) {
+		this.traceResultStatus = traceResultStatus;
 	}
 
-	public boolean isInProgress() {
-		return inProgress;
+	public RouteStatus getTraceRouteStatus() {
+		return traceRouteStatus;
 	}
 
-	public void setInProgress(boolean inProgress) {
-		this.inProgress = inProgress;
-	}
-
-	public StateMachine getTraceState() {
-		return traceState;
-	}
-
-	public void setTraceState(StateMachine traceState) {
-		this.traceState = traceState;
+	public void setTraceRouteStatus(RouteStatus traceRouteStatus) {
+		this.traceRouteStatus = traceRouteStatus;
 	}
 }
