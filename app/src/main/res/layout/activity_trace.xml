@@ -27,32 +27,43 @@
         android:layout_marginTop="15dp"
         android:text="@string/activity_button" />
 
-    <ListView
-        android:id="@+id/listViewTraceroute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonLaunch"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" >
-    </ListView>
-
     <ProgressBar
         android:id="@+id/progressBarPing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/listViewTraceroute"
+        android:layout_below="@+id/editTextPing"
         android:layout_toRightOf="@+id/buttonLaunch"
+        android:layout_marginTop="15dp"
         android:visibility="gone" />
 
-    <TextView
-        android:text=""
+    <Button
+        android:id="@+id/buttonTestVpn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/buttonLaunch"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
+        android:layout_below="@+id/textViewOverallStatus"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Test VPN"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/listViewTraceroute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonTestVpn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" >
+    </ListView>
+
+
+
+    <TextView
+        android:text="......."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonLaunch"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
         android:id="@+id/textViewOverallStatus" />
 
 </RelativeLayout>

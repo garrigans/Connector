@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.projects.haxor.connector.R;
+import com.projects.haxor.connector.enums.ResusltStatus;
 import com.projects.haxor.connector.enums.RouteStatus;
 import com.projects.haxor.connector.network.TracerouteContainer;
 import com.projects.haxor.connector.network.TracerouteWithPing;
@@ -56,6 +57,7 @@ public class TraceActivity extends Activity {
 	public static final String INTENT_TRACE = "INTENT_TRACE";
 
 	private Button buttonLaunch;
+	private Button buttonTestVpn;
 	private EditText editTextPing;
 	private ProgressBar progressBarPing;
 	private ListView listViewTraceroute;
@@ -79,6 +81,7 @@ public class TraceActivity extends Activity {
 		this.traces = new ArrayList<TracerouteContainer>();
 
 		this.buttonLaunch = (Button) this.findViewById(R.id.buttonLaunch);
+		this.buttonTestVpn = (Button) this.findViewById(R.id.buttonTestVpn);
 		this.editTextPing = (EditText) this.findViewById(R.id.editTextPing);
 		this.listViewTraceroute = (ListView) this.findViewById(R.id.listViewTraceroute);
 		this.progressBarPing = (ProgressBar) this.findViewById(R.id.progressBarPing);
@@ -97,7 +100,7 @@ public class TraceActivity extends Activity {
 				if (editTextPing.getText().length() == 0) {
 					Toast.makeText(TraceActivity.this, getString(R.string.no_text), Toast.LENGTH_SHORT).show();
 				} else {
-
+					removeTestVpnButton();
 					textViewOverallStatus.setText("Launching...");
 					traces.clear();
 					traceListAdapter.notifyDataSetChanged();
@@ -210,6 +213,9 @@ public class TraceActivity extends Activity {
 				textViewOverallStatus.setText("In progress...");
 			}else if (tracerouteWithPing.getTraceRouteStatus() == RouteStatus.FINISH){
 				textViewOverallStatus.setText("Finished..." + tracerouteWithPing.getTraceResultStatus());
+				if(tracerouteWithPing.getTraceResultStatus() == ResusltStatus.REACHABLE){
+					showTestVpnButton();
+				}
 
 
 			}
@@ -248,5 +254,9 @@ public class TraceActivity extends Activity {
 	public void stopProgressBar() {
 		progressBarPing.setVisibility(View.GONE);
 	}
+
+	public void showTestVpnButton() { buttonTestVpn.setVisibility(View.VISIBLE);}
+
+	public void removeTestVpnButton() { buttonTestVpn.setVisibility(View.GONE);}
 
 }
