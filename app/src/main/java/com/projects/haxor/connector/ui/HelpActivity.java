@@ -1,33 +1,22 @@
 package com.projects.haxor.connector.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.projects.haxor.connector.R;
 
-public class MainActivity extends AppCompatActivity {
-
-    private Button buttonTestRoute;
-    private Button buttonTestVpnConnection;
+public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_help);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-//        findViewById(android.R.id.content).setBackgroundColor();
-//        this.buttonTestRoute = (Button) this.findViewById(R.id.buttonTestRoute);
-//        this.buttonTestVpnConnection = (Button) this.findViewById(R.id.buttonTestVpnConnection);
-
 
     }
 
@@ -58,28 +47,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void launchTraceActivity(View v){
-        System.out.println("Test trace activity");
-        Intent intent = new Intent(MainActivity.this, TraceActivity.class);
-        startActivity(intent);
-    }
-
-    public void launchTestVpnActivity(View v){
-        System.out.println("Test VPN");
-        Intent intent = new Intent(MainActivity.this, TestVpnActivity.class);
-        startActivity(intent);
-    }
-
-    public void launchLookupIpActivity(View v){
-        System.out.println("Lookup Ip details");
-        Intent intent = new Intent(MainActivity.this, IPLookupActivity.class);
-        startActivity(intent);
-
-    }
-
-    public void launchHelpActivity(View v){
-        System.out.println("Help");
-        Intent intent = new Intent(MainActivity.this, HelpActivity.class);
-        startActivity(intent);
-    }
 }

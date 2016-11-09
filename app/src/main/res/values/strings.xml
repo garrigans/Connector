@@ -11,12 +11,13 @@
     <string name="string_test">test</string>
     <string name="error">An error occurred, please try again</string>
     <string name="timeout">Timeout</string>
-    <string name="placeholder">www.google.fr</string>
-    <string name="title_activity_test_vpn">TestVpnActivity</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="placeholder">Domain or ip</string>
+    <string name="title_activity_test_vpn">Test VPN</string>
+    <string name="title_activity_main">Connector</string>
 
     <string name="connecting">"Connecting...</string>
     <string name="disconnected">Disconnected...</string>
     <string name="connected">Connected...</string>
+    <string name="title_activity_help">HelpActivity</string>
 
 </resources>
