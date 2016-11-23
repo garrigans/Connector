@@ -82,4 +82,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, HelpActivity.class);
         startActivity(intent);
     }
+
+    public void launchTestPortActivity(View v){
+        System.out.println("Test port activity");
+        Intent intent = new Intent(MainActivity.this, TestPortAccess.class);
+        startActivity(intent);
+    }
 }

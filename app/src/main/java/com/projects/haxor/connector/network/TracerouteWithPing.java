@@ -24,10 +24,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.projects.haxor.connector.R;
-import com.projects.haxor.connector.enums.*;
+import com.projects.haxor.connector.enums.ResusltStatus;
+import com.projects.haxor.connector.enums.RouteStatus;
+import com.projects.haxor.connector.enums.StateMachine;
 import com.projects.haxor.connector.ui.TraceActivity;
 
 import java.io.BufferedReader;
@@ -67,7 +70,7 @@ public class TracerouteWithPing {
 
 
 	// timeout handling
-	private static final int TIMEOUT = 30000;
+	private static final int TIMEOUT = 60000;
 	private Handler handlerTimeout;
 	private static Runnable runnableTimeout;
 
@@ -239,7 +242,7 @@ public class TracerouteWithPing {
 			String format = "ping -c 1 -t %d ";
 			command = String.format(format, ttl);
 
-//			Log.d(TraceActivity.tag, "Will launch : " + command + url);
+			Log.d(TraceActivity.tag, "Will launch : " + command + url);
 
 			long startTime = System.nanoTime();
 			elapsedTime = 0;

@@ -79,15 +79,17 @@
             android:alpha="0.85"
             android:background="#00b300" />
 
-        <TextView
+        <Button
+            android:id="@+id/buttonTestPort"
             android:layout_width="0dp"
             android:layout_height="100dp"
             grid:layout_columnWeight="1"
             grid:layout_gravity="fill_horizontal"
             android:gravity="center"
+            android:text="Test Port Access"
+            android:onClick="launchTestPortActivity"
             android:alpha="0.85"
-            android:background="#00b300"
-            android:text="Tile2" />
+            android:background="#00b300" />
 
         <TextView
             android:layout_width="0dp"

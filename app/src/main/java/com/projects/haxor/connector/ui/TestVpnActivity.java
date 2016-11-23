@@ -1,9 +1,25 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.projects.haxor.connector.ui;
 
+
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.VpnService;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,19 +33,18 @@ public class TestVpnActivity extends AppCompatActivity implements View.OnClickLi
     private TextView mServerAddress;
     private TextView mServerPort;
     private TextView mSharedSecret;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_vpn);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
         setSupportActionBar(myToolbar);
 
         mServerAddress = (TextView) findViewById(R.id.address);
         mServerPort = (TextView) findViewById(R.id.port);
         mSharedSecret = (TextView) findViewById(R.id.secret);
-
         findViewById(R.id.connect).setOnClickListener(this);
     }
 
@@ -59,10 +74,8 @@ public class TestVpnActivity extends AppCompatActivity implements View.OnClickLi
 
         }
     }
-
     @Override
     public void onClick(View v) {
-        System.out.println("Attempting to run, recieved click");
         Intent intent = VpnService.prepare(this);
         if (intent != null) {
             startActivityForResult(intent, 0);
@@ -70,12 +83,9 @@ public class TestVpnActivity extends AppCompatActivity implements View.OnClickLi
             onActivityResult(0, RESULT_OK, null);
         }
     }
-
     @Override
     protected void onActivityResult(int request, int result, Intent data) {
-        System.out.println("Hitting activity result.");
         if (result == RESULT_OK) {
-            System.out.println("Trying connection");
             String prefix = getPackageName();
             Intent intent = new Intent(this, ConnectorVpnService.class)
                     .putExtra(prefix + ".ADDRESS", mServerAddress.getText().toString())
